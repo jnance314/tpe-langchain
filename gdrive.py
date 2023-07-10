@@ -5,13 +5,23 @@ from langchain.document_loaders import GoogleDriveLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import Chroma
+# import os
+from dotenv import load_dotenv #to hide your API keys
 
-# add the api keys!
-# ------
+load_dotenv() 
+#if you get an error, do `pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib`
+
+# note on google credentials: the directory is somewhat unpredictable. although you can try the root,
+# I had to put mine in C:/Users/me/.credentials/credentials.json
 
 # load the documents from a google drive folder
-folder_id = "YOUR_FOLDER_ID"
-loader = GoogleDriveLoader(folder_id=folder_id, recursive=False) # recursive=True will load all subfolders
+loader = GoogleDriveLoader(
+    token_path='./token.json',
+    folder_id= '1-sAD-TSBstS1IjbGPBXBqw2rCJpJcsnN',
+    recursive=False, # recursive=True will load all subfolders
+    file_types=["sheet", "document", "pdf"]
+)
+
 docs = loader.load() 
 
 # split the documents into chunks
@@ -22,7 +32,7 @@ texts = text_splitter.split_documents(docs)
 embeddings = OpenAIEmbeddings()
 db = Chroma.from_documents(texts, embeddings)
 retriever = db.as_retriever()
-llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo")
+llm = ChatOpenAI(temperature=0, model_name="gpt-4-0613")
 
 # create the QA model
 qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
@@ -32,6 +42,6 @@ qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retrieve
 
 # run the QA model
 while True:
-    query = input("My query: What's the purpose of the program?")
+    query = input("Type here >> ")
     answer = qa.run(query)
     print(answer)

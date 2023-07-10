@@ -53,7 +53,7 @@ PyJWT
 pymongo
 pyparsing
 python-dateutil
-#python-dotenv
+python-dotenv
 pytz
 PyYAML
 regex
