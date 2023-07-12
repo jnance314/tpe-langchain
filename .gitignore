@@ -2,3 +2,7 @@
 .env
 __pycache__
 .token
+.chroma
+credentials.json
+functional.py
+requirements.txt
