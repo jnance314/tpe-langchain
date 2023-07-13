@@ -3,6 +3,7 @@
 __pycache__
 .token
 .chroma
+.credentials
 credentials.json
 functional.py
 requirements.txt
