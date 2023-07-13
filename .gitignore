@@ -1,7 +1,7 @@
 # Ignore files related to API keys
 .env
 __pycache__
-.token
+token.json
 .chroma
 .credentials
 credentials.json
