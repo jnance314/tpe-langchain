@@ -3,7 +3,6 @@ from langchain.chains import LLMRequestsChain, LLMChain
 from langchain.prompts import PromptTemplate
 from dotenv import load_dotenv
 from langchain.document_loaders import Docx2txtLoader
-# from langchain.chains import SimpleSequentialChain
 load_dotenv()
 
 # This program does the following:
@@ -19,7 +18,7 @@ jd_url = "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=36
 #specify the LLM base you want to use
 llm = OpenAI(temperature=0)
 
-# load the resume
+# load the resume file from your root directory
 loader = Docx2txtLoader("resume.docx")
 resume_doc = loader.load()
 resume_text = resume_doc[0].page_content
@@ -124,3 +123,13 @@ events_result = events_chain(inputs)['output']
 
 # List the workshops and thier links to sign up
 print(events_result)
+
+
+# ~--------------------
+# ~ things to try:
+# ~ 1) [Beginner] Alter the prompts and record your observations. Ex- What happens if we don't use one-shot prompting? What happens if we increase temperature?
+# ~ 2) [Beginner] Implement a different document loader for the resume. Ex- .pdf or .html instead of .docx
+# ~ 3) [Intermediate] try implementing the pipeline as a single chain with SequentialChain https://python.langchain.com/docs/modules/chains/foundational/sequential_chains
+# ~ 4) [Intermediate] try a different data pipeline. Instead of a resume, linkedin, and online workshops--> try a research paper, google trends, and google scholar
+# ~ 5) [Advanced] Try a different LLM base model. Instead of OpenAI, try Llama-2, GPT-J, etc. using huggingface https://python.langchain.com/docs/integrations/llms/huggingface_hub
+# ~ 6) [Advanced] Try to parse tabular data (.csv, sql, .xlsx) in a chain instead of text, and use the math chain to perform calculations using https://python.langchain.com/docs/modules/chains/additional/llm_math
